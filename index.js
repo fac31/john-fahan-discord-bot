@@ -1,11 +1,15 @@
-require('dotenv').config();  
+require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 const { OpenAI } = require('openai');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -38,6 +42,9 @@ for (const file of eventFiles) {
     }
 }
 
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+});
 
 
 client.on('messageCreate', async message => {
@@ -56,14 +63,18 @@ client.on('messageCreate', async message => {
     console.log("Query extracted for OpenAI: ", query);  // Log the extracted query
 
     try {
-        const response = await openai.createCompletion({
+        const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            prompt: query,
-            max_tokens: 150,
+            messages: [{ role: "user", content: query }]
         });
 
-        console.log("OpenAI Response: ", response.choices[0].text.trim());
-        message.channel.send(response.choices[0].text.trim());
+        if (response && response.choices && response.choices.length > 0) {
+            console.log("OpenAI Response: ", response.choices[0].message.content.trim());
+            message.channel.send(response.choices[0].message.content.trim());
+        } else {
+            console.log("No choices available in response.");
+            message.channel.send("I couldn't generate a reply. Please try again.");
+        }
     } catch (error) {
         console.error('Error connecting to OpenAI:', error);
         message.channel.send('Sorry, I encountered an error while processing your request.');
