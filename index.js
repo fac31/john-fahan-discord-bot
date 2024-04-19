@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
-import OpenAI from 'openai/index.mjs';
+const { OpenAI } = require('openai');
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -63,14 +63,18 @@ client.on('messageCreate', async message => {
     console.log("Query extracted for OpenAI: ", query);  // Log the extracted query
 
     try {
-        const response = await openai.Completion.create({
+        const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            prompt: query,
-            max_tokens: 150,
+            messages: [{ role: "user", content: query }]
         });
 
-        console.log("OpenAI Response: ", response.choices[0].text.trim());
-        message.channel.send(response.choices[0].text.trim());
+        if (response && response.choices && response.choices.length > 0) {
+            console.log("OpenAI Response: ", response.choices[0].message.content.trim());
+            message.channel.send(response.choices[0].message.content.trim());
+        } else {
+            console.log("No choices available in response.");
+            message.channel.send("I couldn't generate a reply. Please try again.");
+        }
     } catch (error) {
         console.error('Error connecting to OpenAI:', error);
         message.channel.send('Sorry, I encountered an error while processing your request.');
