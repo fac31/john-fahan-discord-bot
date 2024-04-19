@@ -1,9 +1,11 @@
+require('dotenv').config();  
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
+const { OpenAI } = require('openai');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -35,5 +37,37 @@ for (const file of eventFiles) {
         client.on(event.name, (...args) => event.execute(...args));
     }
 }
+
+
+
+client.on('messageCreate', async message => {
+    console.log("Message received: ", message.content);  // Log all messages to debug
+
+    // Check if the message starts with '!ask' and is not from a bot
+    if (!message.content.startsWith('!ask') || message.author.bot) {
+        console.log("Message is not a command or sent by a bot");
+        return;
+    }
+
+    console.log("Command recognized: ", message.content);  // If this logs, the command is recognized
+
+    // Trim the command text and remove '!ask ' to isolate the query
+    const query = message.content.slice(5).trim();
+    console.log("Query extracted for OpenAI: ", query);  // Log the extracted query
+
+    try {
+        const response = await openai.createCompletion({
+            model: "gpt-3.5-turbo",
+            prompt: query,
+            max_tokens: 150,
+        });
+
+        console.log("OpenAI Response: ", response.choices[0].text.trim());
+        message.channel.send(response.choices[0].text.trim());
+    } catch (error) {
+        console.error('Error connecting to OpenAI:', error);
+        message.channel.send('Sorry, I encountered an error while processing your request.');
+    }
+});
 
 client.login(token);
