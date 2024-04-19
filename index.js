@@ -1,11 +1,15 @@
-require('dotenv').config();  
+require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
-const { OpenAI } = require('openai');
+import OpenAI from 'openai/index.mjs';
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -38,6 +42,9 @@ for (const file of eventFiles) {
     }
 }
 
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}!`);
+});
 
 
 client.on('messageCreate', async message => {
@@ -56,7 +63,7 @@ client.on('messageCreate', async message => {
     console.log("Query extracted for OpenAI: ", query);  // Log the extracted query
 
     try {
-        const response = await openai.createCompletion({
+        const response = await openai.Completion.create({
             model: "gpt-3.5-turbo",
             prompt: query,
             max_tokens: 150,
