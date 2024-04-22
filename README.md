@@ -19,7 +19,7 @@ Ahead of running this project the following steps need to be actioned:
 6. Inside the `.env` file, fill in the values of the _Server ID_, _Discord Bot Token_, and _OpenAI API key_ .
 7. Start the project using `npm start`
 
-## Meet Your Bot Sunshine Sierra ☀
+## Meet Your Bot, Sunshine Sierra ☀
 
 Now you're ready to meet our bot Sunshine Sierra. Our bot is intended to serve as a positive reinforcement friend inside your discord server. Perfect for using discord as part of your day to day work. 
 
