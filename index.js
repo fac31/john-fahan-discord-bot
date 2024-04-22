@@ -50,16 +50,16 @@ client.on('ready', () => {
 client.on('messageCreate', async message => {
     console.log("Message received: ", message.content);  // Log all messages to debug
 
-    // Check if the message starts with '!ask' and is not from a bot
-    if (!message.content.startsWith('!ask') || message.author.bot) {
+    // Check if the message starts with 'Hi Sierra, ' and is not from a bot
+    if (!message.content.startsWith('Hi Sierra,') || message.author.bot) {
         console.log("Message is not a command or sent by a bot");
         return;
     }
 
     console.log("Command recognized: ", message.content);  // If this logs, the command is recognized
 
-    // Trim the command text and remove '!ask ' to isolate the query
-    const query = message.content.slice(5).trim();
+    // Trim the command text and remove 'Hi Sierra, ' to isolate the query
+    const query = message.content.slice(11).trim();
     console.log("Query extracted for OpenAI: ", query);  // Log the extracted query
 
     try {
