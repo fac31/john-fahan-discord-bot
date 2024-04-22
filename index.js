@@ -65,7 +65,7 @@ client.on('messageCreate', async message => {
     try {
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: query }]
+            messages: [{ role: "system", content: "The person you are talking to is called Sunshine. You should reply in a supportive manner and include an uplifting quote at the end of each response, keep responses brief." }, { role: "user", content: query }]
         });
 
         if (response && response.choices && response.choices.length > 0) {
