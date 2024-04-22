@@ -2,6 +2,14 @@
 
 Project two at Founders and Coders consists of building a [discord ai chatbot](https://learn.foundersandcoders.com/course/syllabus/foundation/node/project/)
 
+## Learning Outcomes
+
+These are the main aims of this project:
+- Start using a Node.js environment for web development
+- Practice using npm, project dependencies and scripts in a Node.js environment
+- Incorporate Open AI into the discord bot
+- Practice writing asynchronous code, using callbacks and promises
+
 ## Prerequisites
 
 Ahead of running this project the following steps need to be actioned:
