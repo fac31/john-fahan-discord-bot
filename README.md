@@ -27,7 +27,9 @@ Here are a few examples to try:
 
 > **\pickup** - This will send you a nice uplifting message
 
-> **!ask** + Question - This will allow you to ask a question to Sunshine Sierra as the bot will is linked to ChatGPT 
+> **Hi Sierra,** + Question - This will allow you to ask a question to Sunshine Sierra as the bot will is linked to ChatGPT. 
+
+> **Chatbot Personality** - Sunshine Sierra is a supportive and encouraging bot, full of inspirational quotes
 
 ## Contact
 
