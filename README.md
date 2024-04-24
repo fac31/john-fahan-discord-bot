@@ -37,7 +37,9 @@ Here are a few examples to try:
 
 > **Hi Sierra,** + Question - This will allow you to ask a question to Sunshine Sierra as the bot will is linked to ChatGPT. 
 
-> **Chatbot Personality** - Sunshine Sierra is a supportive and encouraging bot, after every message it will also include a supportive quote. Ask questions about your feelings and Sunshine Sierra will revert with a helpful quote to suit the moment
+> **Chatbot Personality** - Sunshine Sierra is a supportive and encouraging bot, after every message it will also include a supportive quote
+
+> **Chatbot Interaction** - Ask questions about your feelings and Sunshine Sierra will revert with a helpful quote to suit the moment
 
 ## Contact
 
